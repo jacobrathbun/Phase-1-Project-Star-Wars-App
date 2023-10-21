@@ -1,10 +1,15 @@
 const yodaBtn = document.getElementById('yodaBtn');
 const yodaContainer = document.getElementById('yodaDataContainer');
+const yoda = 20;
 
 yodaBtn.addEventListener("click", () => {
+   buttonFetch(yoda);
+});
+
+function buttonFetch(character) {
     yodaContainer.innerHTML = "Fetching data..."
 
-    fetch('https://swapi.dev/api/people/20/')
+    fetch(`https://swapi.dev/api/people/${20}/`)
     .then((response) => {
         if (!response.ok) {
             throw new Error("Error connecting to SWAPI...");
@@ -51,8 +56,8 @@ yodaBtn.addEventListener("click", () => {
     })
     .catch((error) => {
         console.error("Error fetching character data.", error);
-    });
-});
+    }); 
+}
 
 const searchForm = document.getElementById('searchForm');
 const searchInput = document.getElementById('searchInput');
