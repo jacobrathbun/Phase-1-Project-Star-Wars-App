@@ -2,6 +2,8 @@ const yodaBtn = document.getElementById('yodaBtn');
 const yodaContainer = document.getElementById('yodaDataContainer');
 
 yodaBtn.addEventListener("click", () => {
+    yodaContainer.innerHTML = "Fetching data..."
+
     fetch('https://swapi.dev/api/people/20/')
     .then((response) => {
         if (!response.ok) {
