@@ -24,33 +24,68 @@ yodaBtn.addEventListener("click", () => {
 });
 
 const searchForm = document.getElementById('searchForm');
+const searchInput = document.getElementById('searchInput');
 const characterSearchContainer = document.getElementById('characterSearchContainer');
 
 searchForm.addEventListener("submit", (form) => {
     form.preventDefault();
 
-    const formData = searchForm.querySelector('input').value;
+    const formData = searchInput.value;
 
     fetch(`https://swapi.dev/api/people/?search=${formData}`)
     .then((response) => {
         if (!response.ok) {
-            throw new Error("Error connection to SWAPI...")
+            throw new Error("Error connecting to SWAPI");
         }
         return response.json();
     })
     .then((data) => {
-
         if (data.results && data.results.length > 0) {
-            const resultsHTML = data.results.map((result) => {
-                return `
-                <h2>Name: ${result.name}</h2>
-                <p>Height: ${result.height} cm</p>
-                <p>Mass: ${result.mass} kg</p>
-                <p>Eye Color: ${result.eye_color}</p>
-                <p>Hair Color: ${result.hair_color}</p>
-            `;
-            }).join("");
-            characterSearchContainer.innerHTML = resultsHTML;
+            characterSearchContainer.innerHTML = ""; 
+
+            data.results.forEach((result) => {                
+                const characterContainer = document.createElement('div');
+                characterContainer.className = 'character-container';
+                
+                const characterLink = document.createElement('a');
+                characterLink.href = "#";
+                characterLink.className = 'character-link';
+                characterLink.setAttribute('data-url', result.url);
+                characterLink.textContent = result.name;
+                
+                const characterDataContainer = document.createElement('div');
+                characterDataContainer.className = 'character-data-container';
+                
+                characterContainer.appendChild(characterLink);
+                characterContainer.appendChild(characterDataContainer);
+                
+                characterSearchContainer.appendChild(characterContainer);
+                
+                characterLink.addEventListener("click", (clickEvent) => {
+                    clickEvent.preventDefault();
+                    
+                    const characterUrl = characterLink.getAttribute('data-url');
+                    fetch(characterUrl)
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error("Error connecting to SWAPI");
+                            }
+                            return response.json();
+                        })
+                        .then((characterData) => {                            
+                            characterDataContainer.innerHTML = `
+                                <h2>Name: ${characterData.name}</h2>
+                                <p>Height: ${characterData.height} cm</p>
+                                <p>Mass: ${characterData.mass} kg</p>
+                                <p>Eye Color: ${characterData.eye_color}</p>
+                                <p>Hair Color: ${characterData.hair_color}</p>
+                            `;
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching character data...", error);
+                        });
+                });
+            });
         } else {
             characterSearchContainer.innerHTML = "No results found...";
         }
