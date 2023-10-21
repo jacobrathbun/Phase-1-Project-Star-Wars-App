@@ -63,27 +63,33 @@ searchForm.addEventListener("submit", (form) => {
                 
                 characterLink.addEventListener("click", (clickEvent) => {
                     clickEvent.preventDefault();
+
+                    if(characterDataContainer.style.display === 'block') {
+                        characterDataContainer.style.display = 'none';
+                    } else {
+                        characterDataContainer.style.display = 'block';                    
                     
-                    const characterUrl = characterLink.getAttribute('data-url');
-                    fetch(characterUrl)
-                        .then((response) => {
-                            if (!response.ok) {
-                                throw new Error("Error connecting to SWAPI");
-                            }
-                            return response.json();
-                        })
-                        .then((characterData) => {                            
-                            characterDataContainer.innerHTML = `
-                                <h2>Name: ${characterData.name}</h2>
-                                <p>Height: ${characterData.height} cm</p>
-                                <p>Mass: ${characterData.mass} kg</p>
-                                <p>Eye Color: ${characterData.eye_color}</p>
-                                <p>Hair Color: ${characterData.hair_color}</p>
-                            `;
-                        })
-                        .catch((error) => {
-                            console.error("Error fetching character data...", error);
-                        });
+                        const characterUrl = characterLink.getAttribute('data-url');
+                        fetch(characterUrl)
+                            .then((response) => {
+                                if (!response.ok) {
+                                    throw new Error("Error connecting to SWAPI");
+                                }
+                                return response.json();
+                            })
+                            .then((characterData) => {                            
+                                characterDataContainer.innerHTML = `
+                                    <h2>Name: ${characterData.name}</h2>
+                                    <p>Height: ${characterData.height} cm</p>
+                                    <p>Mass: ${characterData.mass} kg</p>
+                                    <p>Eye Color: ${characterData.eye_color}</p>
+                                    <p>Hair Color: ${characterData.hair_color}</p>
+                                `;
+                            })
+                            .catch((error) => {
+                                console.error("Error fetching character data...", error);
+                            });
+                    }
                 });
             });
         } else {
