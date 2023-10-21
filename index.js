@@ -5,18 +5,47 @@ yodaBtn.addEventListener("click", () => {
     fetch('https://swapi.dev/api/people/20/')
     .then((response) => {
         if (!response.ok) {
-            throw new Error("Error connecting to SWAPI...")
+            throw new Error("Error connecting to SWAPI...");
         }
         return response.json();
     })
     .then((data) => {
-        yodaContainer.innerHTML = `
-        <h2>Name: ${data.name}</h2>
-                <p>Height: ${data.height} cm</p>
-                <p>Mass: ${data.mass} kg</p>
-                <p>Eye Color: ${data.eye_color}</p>
-                <p>Hair Color: ${data.hair_color}</p>                
-            `; 
+        
+        fetch(data.homeworld)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Error connecting to SWAPI for homeworld data");
+                }
+                return response.json();
+            })
+            .then((homeworldData) => {
+                
+                fetch(data.species[0])
+                    .then((speciesResponse) => {
+                        if (!speciesResponse.ok) {
+                            throw new Error("Error connecting to SWAPI for species data");
+                        }
+                        return speciesResponse.json();
+                    })
+                    .then((speciesData) => {
+                        
+                        yodaContainer.innerHTML = `
+                            <h2>Name: ${data.name}</h2>
+                            <p>Height: ${data.height} cm</p>
+                            <p>Mass: ${data.mass} kg</p>
+                            <p>Eye Color: ${data.eye_color}</p>
+                            <p>Hair Color: ${data.hair_color}</p>
+                            <p>Homeworld: ${homeworldData.name}</p>
+                            <p>Species: ${speciesData.name}</p>
+                        `;
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching species data.", error);
+                    });
+            })
+            .catch((error) => {
+                console.error("Error fetching homeworld data.", error);
+            });
     })
     .catch((error) => {
         console.error("Error fetching character data.", error);
