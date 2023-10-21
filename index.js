@@ -9,7 +9,7 @@ yodaBtn.addEventListener("click", () => {
 function buttonFetch(character) {
     yodaContainer.innerHTML = "Fetching data..."
 
-    fetch(`https://swapi.dev/api/people/${20}/`)
+    fetch(`https://swapi.dev/api/people/${character}/`)
     .then((response) => {
         if (!response.ok) {
             throw new Error("Error connecting to SWAPI...");
