@@ -61,6 +61,8 @@ const characterSearchContainer = document.getElementById('characterSearchContain
 searchForm.addEventListener("submit", (form) => {
     form.preventDefault();
 
+    characterSearchContainer.innerHTML = "Fetching data..."    
+
     const formData = searchInput.value;
 
     fetch(`https://swapi.dev/api/people/?search=${formData}`)
@@ -94,6 +96,7 @@ searchForm.addEventListener("submit", (form) => {
                 
                 characterLink.addEventListener("click", (clickEvent) => {
                     clickEvent.preventDefault();
+                    clickEvent.target.nextElementSibling.innerHTML = "Fetching Data..."
 
                     if(characterDataContainer.style.display === 'block') {
                         characterDataContainer.style.display = 'none';
