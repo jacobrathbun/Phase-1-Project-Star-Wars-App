@@ -1,6 +1,18 @@
 const yodaBtn = document.getElementById('yodaBtn');
+const bobaBtn = document.getElementById('bobaBtn');
+const vaderBtn = document.getElementById('vaderBtn');
+const jabbaBtn = document.getElementById('jabbaBtn');
+const r2Btn = document.getElementById('r2Btn');
 const yodaContainer = document.getElementById('yodaDataContainer');
+const bobaContainer = document.getElementById('bobaDataContainer');
+const vaderContainer = document.getElementById('vaderDataContainer');
+const jabbaContainer = document.getElementById('jabbaDataContainer');
+const r2Container = document.getElementById('r2DataContainer');
 const yoda = 20;
+const boba = 22;
+const vader = 4;
+const jabba = 16;
+const r2 = 3;
 
 yodaBtn.addEventListener("click", () => {
    buttonFetch(yoda);
