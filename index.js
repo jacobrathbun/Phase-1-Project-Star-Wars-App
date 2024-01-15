@@ -55,33 +55,45 @@ function buttonFetch(character, container) {
             })
             .then((homeworldData) => {
                 
-                fetch(data.species[0])
-                    .then((speciesResponse) => {
-                        if (!speciesResponse.ok) {
-                            throw new Error("Error connecting to SWAPI for species data");
-                        }
-                        return speciesResponse.json();
-                    })
-                    .then((speciesData) => {
-                        
-                        container.innerHTML = `
-                            <h2>Name: ${data.name}</h2>
-                            <p>Height: ${data.height} cm</p>
-                            <p>Mass: ${data.mass} kg</p>
-                            <p>Eye Color: ${data.eye_color}</p>
-                            <p>Hair Color: ${data.hair_color}</p>
-                            <p>Homeworld: ${homeworldData.name}</p>
-                            <p>Species: ${speciesData.name}</p>
+                if (!data.species || data.species.length === 0) {
+                    container.innerHTML = `
+                        <h2>Name: ${data.name}</h2>
+                        <p>Height: ${data.height} cm</p>
+                        <p>Mass: ${data.mass} kg</p>
+                        <p>Eye Color: ${data.eye_color}</p>
+                        <p>Hair Color: ${data.hair_color}</p>
+                        <p>Homeworld: ${homeworldData.name}</p>
+                        <p>Species: Human</p>
                         `;
-                    })
-                    .catch((error) => {
-                        console.error("Error fetching species data.", error);
-                    });
+                } else {
+                    fetch(data.species[0])
+                        .then((speciesResponse) => {
+                            if (!speciesResponse.ok) {
+                                throw new Error("Error connecting to SWAPI for species data");
+                            }
+                            return speciesResponse.json();
+                        })
+                        .then((speciesData) => {
+                            
+                            container.innerHTML = `
+                                <h2>Name: ${data.name}</h2>
+                                <p>Height: ${data.height} cm</p>
+                                <p>Mass: ${data.mass} kg</p>
+                                <p>Eye Color: ${data.eye_color}</p>
+                                <p>Hair Color: ${data.hair_color}</p>
+                                <p>Homeworld: ${homeworldData.name}</p>
+                                <p>Species: ${speciesData.name}</p>
+                            `;
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching species data.", error);
+                        });
+                }
             })
             .catch((error) => {
                 console.error("Error fetching homeworld data.", error);
             });
-    })
+        })
     .catch((error) => {
         console.error("Error fetching character data.", error);
     }); 
