@@ -15,11 +15,27 @@ const jabba = 16;
 const r2 = 3;
 
 yodaBtn.addEventListener("click", () => {
-   buttonFetch(yoda);
+   buttonFetch(yoda, yodaContainer);
 });
 
-function buttonFetch(character) {
-    yodaContainer.innerHTML = "Fetching data..."
+bobaBtn.addEventListener("click", () => {
+    buttonFetch(boba, bobaContainer);
+});
+
+vaderBtn.addEventListener("click", () => {
+    buttonFetch(vader, vaderContainer);
+});
+
+jabbaBtn.addEventListener("click", () => {
+    buttonFetch(jabba, jabbaContainer);
+});
+
+r2Btn.addEventListener("click", () => {
+    buttonFetch(r2, r2Container);
+});
+
+function buttonFetch(character, container) {
+    container.innerHTML = "Fetching data..."
 
     fetch(`https://swapi.dev/api/people/${character}/`)
     .then((response) => {
@@ -48,7 +64,7 @@ function buttonFetch(character) {
                     })
                     .then((speciesData) => {
                         
-                        yodaContainer.innerHTML = `
+                        container.innerHTML = `
                             <h2>Name: ${data.name}</h2>
                             <p>Height: ${data.height} cm</p>
                             <p>Mass: ${data.mass} kg</p>
